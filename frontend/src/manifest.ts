@@ -1,7 +1,7 @@
 import { defineManifest } from '@crxjs/vite-plugin'
 
 export default defineManifest({
-  name: 'cddd',
+  name: '유튜브 인터랙티브 자동자막 생성 서비스',
   description: '',
   version: '0.0.0',
   manifest_version: 3,
