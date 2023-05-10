@@ -1,20 +1,22 @@
 import axios from 'axios'
 
 chrome.runtime.onMessage.addListener(async (args) => {
-  console.log('This is the background page.')
-  console.log('Put the background scripts here.')
+  console.log('백그라운드 전달 완료')
 
-  fetch('http://127.0.0.1:5002/users')
-    .then(
-      // response 객체의 json() 이용하여 json 데이터를 객체로 변화
-      (res) => console.log('성공', res),
-    )
-    .catch(
-      // 데이터를 콘솔에 출력
-      (data) => console.log(data),
-    )
+  const formData = new FormData()
+  formData.append('fileName', 'fileName')
 
-  console.log(args)
+  fetch('http://127.0.0.1:5002/subtitle', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: 'd',
+    }),
+  })
+    .then((res) => console.log('성공', res))
+    .catch((data) => console.log(data))
 })
 
 export {}
