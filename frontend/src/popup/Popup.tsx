@@ -13,7 +13,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <p>유튜브 자동자막 생성 서비스</p>
-          <button onClick={handleFillButtonClick}>자막생</button>
+          <button onClick={handleFillButtonClick}>자막생성</button>
         </header>
       </div>
     </main>
