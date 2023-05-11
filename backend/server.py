@@ -4,9 +4,6 @@ from youtube_transcript_api.formatters import SRTFormatter
 
 import sys
 
-
-
-
 app = Flask(__name__)
 
 @app.route('/users')
@@ -23,13 +20,13 @@ def urls():
     
 @app.route('/subtitle', methods=['POST'])    
 def get_youtube_subtitle():
-    fileName = request.form.get('fileName');
-    print('email',fileName);
-    transcript = YouTubeTranscriptApi.get_transcript("KA78LmDnxJA", languages=['de', 'ko']);
+    url = request.json;
+    print('url',url);
+    transcript = YouTubeTranscriptApi.get_transcript(url['url'], languages=['de', 'ko']);
     formatter = SRTFormatter();
     srt_formatted = formatter.format_transcript(transcript);
-    # print(srt_formatted);
-    return 'd';
+    print(srt_formatted);
+    return 'back->front';
 
 
 if __name__ == "__main__":
