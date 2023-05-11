@@ -1,7 +1,7 @@
 {
-  "name": "testtest",
+  "name": "0511test",
   "version": "0.0.0",
-  "author": "hyun",
+  "author": "no one",
   "description": "",
   "type": "module",
   "license": "MIT",
@@ -16,12 +16,11 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'"
+    "fmt": "prettier --write '**/*.{jsx,js,json,css,scss,md}'"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.235",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -30,9 +29,8 @@
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "@vitejs/plugin-react": "^1.3.2",
-    "glob": "^9.2.1",
+    "glob": "^9.3.0",
     "prettier": "^2.7.1",
-    "typescript": "^4.6.4",
     "vite": "^2.9.13"
   }
 }
