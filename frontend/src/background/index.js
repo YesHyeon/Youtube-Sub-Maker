@@ -2,8 +2,7 @@ import axios from 'axios'
 
 chrome.runtime.onMessage.addListener(async (args) => {
   console.log(args)
-
-  console.log('백그라운드 전달 완료')
+  const youtube_url = args.split('v=')[1]
 
   const formData = new FormData()
   formData.append('fileName', 'dsds')
@@ -14,7 +13,7 @@ chrome.runtime.onMessage.addListener(async (args) => {
       'Content-type': 'application/json',
     },
     // json 형식으로 전달하기
-    body: JSON.stringify({ url: 'test' }),
+    body: JSON.stringify({ url: youtube_url }),
   })
     .then((res) => console.log('성공', res))
     .catch((data) => console.log(data))
