@@ -1,3 +1,5 @@
+chrome.runtime.sendMessage(window.location.href)
+
 const main = () => {
   const mutation = async () => {
     const target = document.querySelector('#body.ytd-transcript-search-panel-renderer')
@@ -69,7 +71,6 @@ const openScript = async () => {
 
 setTimeout(() => {
   console.log('test')
-  chrome.runtime.sendMessage(window.location.href)
   openScript()
 }, 5000)
 
