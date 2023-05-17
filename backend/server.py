@@ -1,6 +1,7 @@
 from flask import Flask, request # Flask
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import SRTFormatter
+# from kss import split_sentences
 
 import sys
 
@@ -25,8 +26,16 @@ def get_youtube_subtitle():
     transcript = YouTubeTranscriptApi.get_transcript(url['url'], languages=['de', 'ko']);
     formatter = SRTFormatter();
     srt_formatted = formatter.format_transcript(transcript);
-    print(srt_formatted);
-    return 'back->front';
+    
+    textArray = [];
+    
+    for i in transcript:
+        textArray.append(i['text']);
+         
+    # print(srt_formatted);
+    # print(transcript);
+    print('textArray',textArray);
+    return 'complete';
 
 
 if __name__ == "__main__":
