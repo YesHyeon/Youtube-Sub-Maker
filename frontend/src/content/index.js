@@ -3,6 +3,9 @@ chrome.runtime.sendMessage(window.location.href)
 const main = () => {
   const mutation = async () => {
     const target = document.querySelector('#body.ytd-transcript-search-panel-renderer')
+    const testTarget = document.getElementsByClassName('ytp-time-display notranslate')[0]
+
+    const testArray = { '49:24': '기억은 돌아오는거야' }
 
     // 2. 옵저버 콜백 생성
     const callback = (mutationList, observer) => {
@@ -12,14 +15,27 @@ const main = () => {
       )
 
       const subtitle = textClass[0].innerText.split('\n')[1]
-      console.log(subtitle)
+      const time = textClass[0].innerText.split('\n')[0]
 
       var buttonSelector = belowId.querySelector('button')
       buttonSelector.innerText = subtitle
     }
 
+    const testCallback = () => {
+      const currentTime = testTarget.innerText.split(' / ')[0]
+
+      if (testArray[currentTime] !== undefined) {
+        console.log('자막이 인식되지 않았습니다.')
+        var buttonSelector = belowId.querySelector('button')
+        buttonSelector.innerText = testArray[currentTime]
+      } else {
+        console.log('자막이 인식되었습니다.')
+      }
+    }
+
     // 3. 옵저버 인스턴스 생성
     const observer = new MutationObserver(callback) // 타겟에 변화가 일어나면 콜백함수를 실행하게 된다.
+    const testObserver = new MutationObserver(testCallback)
 
     // 4. DOM의 어떤 부분을 감시할지를 옵션 설정
     const config = {
@@ -45,9 +61,11 @@ const main = () => {
       belowId.prepend(button)
 
       observer.observe(target, config)
+      testObserver.observe(testTarget, config)
     }
   }
 
+  // 3초 간격으로 감지시작, 감지가 시작되면 요청 중지
   const startMutation = setInterval(() => {
     console.log('start')
     mutation()
