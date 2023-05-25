@@ -1,4 +1,4 @@
-from flask import Flask, request # Flask
+from flask import Flask, request, jsonify # Flask
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import SRTFormatter
 # from kss import split_sentences
@@ -17,7 +17,6 @@ def users():
 def urls():
     # user = request.get_json()#json 데이터를 받아옴
     return 'good';# 받아온 데이터를 다시 전송
-
     
 @app.route('/subtitle', methods=['POST'])    
 def get_youtube_subtitle():
@@ -28,12 +27,20 @@ def get_youtube_subtitle():
     srt_formatted = formatter.format_transcript(transcript);
     
     textArray = [];
+    textItem = ' ';
+    start = "0";
     
     for i in transcript:
-        textArray.append(i['text']);
-         
-    # print(srt_formatted);
-    # print(transcript);
+        if len(textItem) > 30:
+            분 = int(start) / 60;
+            초 = int(start) % 60;
+            start = str(int(분)) + ':' + str(초).zfill(2);
+            textArray.append([textItem, start]);
+            textItem = i['text']; # 텍스트 초기화
+            start = i['start']; # 시작시간 초기화
+        else :
+            textItem = textItem +' '+ i['text'];
+
     print('textArray',textArray);
     return 'complete';
 
