@@ -42,7 +42,7 @@ def get_youtube_subtitle():
             textItem = textItem +' '+ i['text'];
 
     print('textArray',textArray);
-    return 'complete';
+    return jsonify({"textArray" : textArray});
 
 
 if __name__ == "__main__":
