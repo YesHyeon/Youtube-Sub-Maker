@@ -26,11 +26,18 @@ const main = () => {
     }
 
     const testCallback = () => {
-      const currentTime = testTarget.innerText.split(' / ')[0]
+      const target = document.querySelector('#body.ytd-transcript-search-panel-renderer')
+      const textClass = target.getElementsByClassName(
+        'style-scope ytd-transcript-segment-list-renderer active',
+      )
+      // innerText 존재하지 않는 경우 분기처리
+      if (textClass[0] == undefined) {
+        return
+      }
+      const currentTime = textClass[0].innerText.split('\n')[0]
       let buttonSelector = belowId.querySelector('button')
 
       if (subtitle[currentTime] !== undefined) {
-        console.log('자막이 인식되었습니다.')
         buttonSelector.innerText = subtitle[currentTime]
       } else {
         let prevTime
@@ -74,8 +81,8 @@ const main = () => {
       button.style.fontSize = '20px'
       belowId.prepend(button)
 
-      observer.observe(target, config)
-      testObserver.observe(testTarget, config)
+      // observer.observe(target, config)
+      testObserver.observe(target, config)
     }
   }
 
