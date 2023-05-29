@@ -15,8 +15,14 @@ chrome.runtime.onMessage.addListener(async (args) => {
     // json 형식으로 전달하기
     body: JSON.stringify({ url: youtube_url }),
   })
-    .then((res) => console.log('성공', res))
-    .catch((data) => console.log(data))
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+      chrome.tabs.query({ active: true, currentWindow: true }, (pages) => {
+        chrome.tabs.sendMessage(pages[0].id, { data: data })
+      })
+    })
+    .catch((error) => console.log(error))
 })
 
 export {}

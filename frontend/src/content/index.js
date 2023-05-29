@@ -1,11 +1,15 @@
 chrome.runtime.sendMessage(window.location.href)
 
+let subtitle = ''
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  subtitle = message.data.textObj
+})
+
 const main = () => {
   const mutation = async () => {
     const target = document.querySelector('#body.ytd-transcript-search-panel-renderer')
     const testTarget = document.getElementsByClassName('ytp-time-display notranslate')[0]
-
-    const testArray = { '49:24': '기억은 돌아오는거야' }
 
     // 2. 옵저버 콜백 생성
     const callback = (mutationList, observer) => {
@@ -14,22 +18,32 @@ const main = () => {
         'style-scope ytd-transcript-segment-list-renderer active',
       )
 
-      const subtitle = textClass[0].innerText.split('\n')[1]
+      const text = textClass[0].innerText.split('\n')[1]
       const time = textClass[0].innerText.split('\n')[0]
 
-      var buttonSelector = belowId.querySelector('button')
-      buttonSelector.innerText = subtitle
+      let buttonSelector = belowId.querySelector('button')
+      buttonSelector.innerText = text
     }
 
     const testCallback = () => {
       const currentTime = testTarget.innerText.split(' / ')[0]
+      let buttonSelector = belowId.querySelector('button')
 
-      if (testArray[currentTime] !== undefined) {
-        console.log('자막이 인식되지 않았습니다.')
-        var buttonSelector = belowId.querySelector('button')
-        buttonSelector.innerText = testArray[currentTime]
-      } else {
+      if (subtitle[currentTime] !== undefined) {
         console.log('자막이 인식되었습니다.')
+        buttonSelector.innerText = subtitle[currentTime]
+      } else {
+        let prevTime
+        for (const key in subtitle) {
+          // 비디오 시간과 자막시간을 비교하기 위함
+          let subitlteTime = Number(key.split(':').join(''))
+          let videoTime = Number(currentTime.split(':').join(''))
+          if (subitlteTime > videoTime) {
+            buttonSelector.innerText = subtitle[prevTime]
+          } else {
+            prevTime = key
+          }
+        }
       }
     }
 

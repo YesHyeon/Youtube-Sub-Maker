@@ -30,19 +30,24 @@ def get_youtube_subtitle():
     textItem = ' ';
     start = "0";
     
+    textObj = {};
+    
     for i in transcript:
         if len(textItem) > 30:
             분 = int(start) / 60;
             초 = int(start) % 60;
             start = str(int(분)) + ':' + str(초).zfill(2);
+            textObj[start] = textItem;
             textArray.append([textItem, start]);
-            textItem = i['text']; # 텍스트 초기화
+            textItem = i['text']; # 텍스트 초기화``
             start = i['start']; # 시작시간 초기화
         else :
             textItem = textItem +' '+ i['text'];
 
-    print('textArray',textArray);
-    return jsonify({"textArray" : textArray});
+    # print('textArray',textArray);
+    # print('textObj',textObj);
+    print(transcript);
+    return jsonify({"textObj" : textObj});
 
 
 if __name__ == "__main__":
