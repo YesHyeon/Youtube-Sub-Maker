@@ -107,16 +107,13 @@ def get_youtube_subtitle():
     
     textObj[start] = textItem ;
     
-    print(textArray)
+    print(textObj)
     
     return jsonify({"textObj" : textObj});
 
-
-
-    
 @app.route('/emotional', methods=['POST'])    
 def get_youtube_subtitle_emotional():
-    
+        print('여기야');
         url = request.json;
         print('url',url);
         transcript = YouTubeTranscriptApi.get_transcript(url['url'], languages=['de', 'ko']);
@@ -135,9 +132,9 @@ def get_youtube_subtitle_emotional():
                 초 = int(start) % 60;
                 start = str(int(분)) + ':' + str(초).zfill(2);
                 if ''.join(mecabKo[-1]).find('EF') or ''.join(mecabKo[-1]).find('+EC') > 0 :
-                    textObj[start] = textItem + '.';
+                    textObj[start] = [textItem + '.'];
                 else :
-                    textObj[start] = textItem + ',';
+                    textObj[start] = [textItem + ','];
                 textArray.append([textItem, start]);
                 textItem = i['text']; # 텍스트 초기화
                 start = i['start']; # 시작시간 초기화
@@ -174,8 +171,8 @@ def get_youtube_subtitle_emotional():
 
         MAX_LENGTH = 8 #문장최대길이
 
-        for i in textArray:
-                sentence = i[0]
+        for i in textObj:
+                sentence = textObj[i][0];
                 # if sentence == '끝':
                 #     break
                 sentence = re.sub(r'[^ㄱ-ㅎㅏ-ㅣ가-힣\\s ]','', sentence)
@@ -184,27 +181,37 @@ def get_youtube_subtitle_emotional():
                 sentence = [word for word in sentence if not word in stopwords] # 불용어 제거
                 vector  = tokenizer.texts_to_sequences(sentence)
                 pad_new = pad_sequences(vector, maxlen = MAX_LENGTH) # 패딩
+                
+                if(len(pad_new) == 0):
+                    textObj[i] = [textObj[i][0], 0];
+                    continue;
 
                 #학습한 모델 불러오기
                 model = keras.models.load_model('model/my_models/') #TODO 데이터 경로 설정
                 model.load_weights('model/DATA_OUT/cnn_classifier_kr\weights.h5') #TODO 데이터 경로 설정
                 predictions = model.predict(pad_new)
+                if(len(predictions) < 2):
+                    textObj[i] = [textObj[i][0], 0];
+                    continue;
+                    
                 predictions = float(predictions.squeeze(-1)[1])
-                
-                textEmotionalArray.append([textItem, start,predictions*100]);
+                textObj[i] = [textObj[i][0], predictions*100];
+                # textEmotionalArray.append([i[0], i[1], predictions*100 ]);
 
-                # if(predictions > 0.7):
-                #     print(sentence);
-                #     print(sentence);
-                #     print("{:.2f}% 확률로 긍정 리뷰입니다.\n".format(predictions * 100))
-                # elif (predictions < 0.3):
-                #     print(sentence);
-                #     print("{:.2f}% 확률로 부정 리뷰입니다.\n".format((1 - predictions) * 100))
-                # else :
-                #     print(predictions)
-                #     print('중립리뷰입니다.')
+                if(predictions > 0.7):
+                    print(sentence);
+                    print("{:.2f}% 확률로 긍정 리뷰입니다.\n".format(predictions * 100))
+                elif (predictions < 0.3):
+                    print(sentence);
+                    print("{:.2f}% 확률로 부정 리뷰입니다.\n".format((1 - predictions) * 100))
+                else :
+                    print(predictions)
+                    print(sentence);
+                    print('중립리뷰입니다.')
         
-        return textEmotionalArray;
+        print(textObj);
+        
+        return jsonify({"textObj" : textObj});
 
 
 if __name__ == "__main__":
