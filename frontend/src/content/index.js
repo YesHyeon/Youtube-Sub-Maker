@@ -11,8 +11,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     timeArray.push(i)
   }
   console.log(timeArray)
-  if (message.message == 'notEmotional') {
-    chrome.runtime.sendMessage(`${window.location.href} emotional`)
+  if (message.message == 'gotSubtitle') {
+    chrome.runtime.sendMessage(`${window.location.href} getEmotionValue`)
   }
 })
 

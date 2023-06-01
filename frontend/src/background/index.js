@@ -6,7 +6,8 @@ chrome.runtime.onMessage.addListener(async (args) => {
   console.log(args)
   youtube_url = args.split('v=')[1]
 
-  if (args.indexOf('emotional') == -1) {
+  // 감성분석 진행 전 자막불러오기
+  if (args.indexOf('getEmotionValue') == -1) {
     await fetch('http://127.0.0.1:5002/subtitle', {
       method: 'POST',
       headers: {
@@ -22,17 +23,17 @@ chrome.runtime.onMessage.addListener(async (args) => {
           console.log('1 pages', pages)
           console.log('1 pages[0]', pages[0])
           console.log('1 pages[0]-id', pages[0].id)
-          chrome.tabs.sendMessage(pages[0].id, { data: data, message: 'notEmotional' })
+          chrome.tabs.sendMessage(pages[0].id, { data: data, message: 'gotSubtitle' })
         })
       })
       .catch((error) => console.log(error))
   } else {
+    // 자막불러 온 후 감정분석 진행
     await fetch('http://127.0.0.1:5002/emotional', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
       },
-      // json 형식으로 전달하기
       body: JSON.stringify({ url: youtube_url }),
     })
       .then((response) => response.json())
