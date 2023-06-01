@@ -1,9 +1,16 @@
 chrome.runtime.sendMessage(window.location.href)
 
 let subtitle = ''
+// 이전,현재,다음시간을 불러오기 위한 배열 생성
+let timeArray = []
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   subtitle = message.data.textObj
+  console.log(subtitle)
+  for (let i in subtitle) {
+    timeArray.push(i)
+  }
+  console.log(timeArray)
   if (message.message == 'notEmotional') {
     chrome.runtime.sendMessage(`${window.location.href} emotional`)
   }
@@ -43,13 +50,27 @@ const main = () => {
 
       if (subtitle[currentTime] !== undefined) {
         currentTag.innerText = subtitle[currentTime][0]
+        const prevTimeIndex = timeArray.indexOf(currentTime) - 1
+        const nextTimeIndex = timeArray.indexOf(currentTime) + 1
+        if (prevTimeIndex < 0 || timeArray[prevTimeIndex] == '0:00') {
+          prevTextTag.innerText = ''
+        } else {
+          prevTextTag.innerText = subtitle[timeArray[prevTimeIndex]][0]
+        }
+
+        if (nextTimeIndex > timeArray.length - 1) {
+          nextTextTag.innerText = ''
+        } else {
+          nextTextTag.innerText = subtitle[timeArray[nextTimeIndex]][0]
+        }
+
         if (subtitle[currentTime][1] !== undefined) {
           const emotionValue = subtitle[currentTime][1]
           if (emotionValue > 70) {
             currentTag.style.fontSize = '20px'
             currentTag.style.color = 'black'
             console.log('긍정', emotionValue)
-            currentTag.style.fontSize = '50px'
+            currentTag.style.color = 'blue'
           } else if (emotionValue < 30) {
             currentTag.style.fontSize = '20px'
             currentTag.style.color = 'black'
@@ -110,8 +131,8 @@ const main = () => {
       var currentTag = document.createElement('div')
       var prevTextTag = document.createElement('div')
       var nextTextTag = document.createElement('div')
-      currentTag.id = 'currentTag'
       prevTextTag.id = 'prevTextTag'
+      currentTag.id = 'currentTag'
       nextTextTag.id = 'nextTextTag'
 
       currentTag.style.fontSize = '20px'
@@ -120,9 +141,9 @@ const main = () => {
 
       prevTextTag.style.color = 'grey'
       nextTextTag.style.color = 'grey'
+      subtitleBoxTagSelector.prepend(nextTextTag)
       subtitleBoxTagSelector.prepend(currentTag)
       subtitleBoxTagSelector.prepend(prevTextTag)
-      subtitleBoxTagSelector.prepend(nextTextTag)
 
       // observer.observe(target, config)
       testObserver.observe(target, config)
