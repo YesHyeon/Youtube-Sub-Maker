@@ -43,7 +43,7 @@ chrome.runtime.onMessage.addListener(async (args) => {
           console.log('3 pages', pages)
           console.log('3 pages[0]', pages[0])
           console.log('3 pages[0]-id', pages[0].id)
-          chrome.tabs.sendMessage(pages[0].id, { data: data })
+          chrome.tabs.sendMessage(pages[0].id, { data: data, message: 'gotEmotionValue' })
         })
       })
       .catch((error) => console.log(error))

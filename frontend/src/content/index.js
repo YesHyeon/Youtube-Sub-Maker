@@ -5,14 +5,15 @@ let subtitle = ''
 let timeArray = []
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // 감정분석 전 후로 subtitle 변경
   subtitle = message.data.textObj
-  console.log(subtitle)
-  for (let i in subtitle) {
-    timeArray.push(i)
-  }
-  console.log(timeArray)
   if (message.message == 'gotSubtitle') {
+    for (const i in subtitle) {
+      timeArray.push(i)
+    }
     chrome.runtime.sendMessage(`${window.location.href} getEmotionValue`)
+  } else if (message.message == 'gotEmotionValue') {
+    alert('자막의 감성분석이 완료되어 인터랙티브한 자막이 제공됩니다.')
   }
 })
 
@@ -90,6 +91,22 @@ const main = () => {
           let videoTime = Number(currentTime.split(':').join(''))
           if (subitlteTime > videoTime) {
             currentTag.innerText = subtitle[prevTime][0]
+            const emotionValue = subtitle[prevTime][1]
+            if (emotionValue > 70) {
+              currentTag.style.fontSize = '20px'
+              currentTag.style.color = 'black'
+              console.log('긍정', emotionValue)
+              currentTag.style.color = 'blue'
+            } else if (emotionValue < 30) {
+              currentTag.style.fontSize = '20px'
+              currentTag.style.color = 'black'
+              console.log('부정', emotionValue)
+              currentTag.style.color = 'red'
+            } else {
+              console.log('중립', emotionValue)
+              currentTag.style.fontSize = '20px'
+              currentTag.style.color = 'black'
+            }
           } else {
             prevTime = key
           }
