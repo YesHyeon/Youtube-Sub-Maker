@@ -4,6 +4,9 @@ let subtitle = ''
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   subtitle = message.data.textObj
+  if (message.message == 'notEmotional') {
+    chrome.runtime.sendMessage(`${window.location.href} emotional`)
+  }
 })
 
 const main = () => {
@@ -22,7 +25,7 @@ const main = () => {
       const time = textClass[0].innerText.split('\n')[0]
 
       let buttonSelector = belowId.querySelector('button')
-      buttonSelector.innerText = text
+      currentTag.innerText = text
     }
 
     const testCallback = () => {
@@ -35,10 +38,29 @@ const main = () => {
         return
       }
       const currentTime = textClass[0].innerText.split('\n')[0]
+
       let buttonSelector = belowId.querySelector('button')
 
       if (subtitle[currentTime] !== undefined) {
-        buttonSelector.innerText = subtitle[currentTime]
+        currentTag.innerText = subtitle[currentTime][0]
+        if (subtitle[currentTime][1] !== undefined) {
+          const emotionValue = subtitle[currentTime][1]
+          if (emotionValue > 70) {
+            currentTag.style.fontSize = '20px'
+            currentTag.style.color = 'black'
+            console.log('긍정', emotionValue)
+            currentTag.style.fontSize = '50px'
+          } else if (emotionValue < 30) {
+            currentTag.style.fontSize = '20px'
+            currentTag.style.color = 'black'
+            console.log('부정', emotionValue)
+            currentTag.style.color = 'red'
+          } else {
+            console.log('중립', emotionValue)
+            currentTag.style.fontSize = '20px'
+            currentTag.style.color = 'black'
+          }
+        }
       } else {
         let prevTime
         for (const key in subtitle) {
@@ -46,7 +68,7 @@ const main = () => {
           let subitlteTime = Number(key.split(':').join(''))
           let videoTime = Number(currentTime.split(':').join(''))
           if (subitlteTime > videoTime) {
-            buttonSelector.innerText = subtitle[prevTime]
+            currentTag.innerText = subtitle[prevTime][0]
           } else {
             prevTime = key
           }
@@ -74,12 +96,33 @@ const main = () => {
       alert('자막 생성을 시작합니다.')
       var belowId = document.getElementById('below')
 
-      var button = document.createElement('button')
-      button.style.width = '100%'
-      button.style.height = '50px'
-      button.style.border = '1px solid blue'
-      button.style.fontSize = '20px'
-      belowId.prepend(button)
+      // 자막박스 추가
+      var subtitleBoxTag = document.createElement('button')
+      subtitleBoxTag.style.width = '100%'
+      subtitleBoxTag.style.minHeight = '50px'
+      subtitleBoxTag.style.border = '1px solid blue'
+      subtitleBoxTag.style.fontSize = '20px'
+      subtitleBoxTag.id = 'subtitleBox'
+      belowId.prepend(subtitleBoxTag)
+
+      // 자막박스에 텍스트 추가
+      let subtitleBoxTagSelector = belowId.querySelector('button')
+      var currentTag = document.createElement('div')
+      var prevTextTag = document.createElement('div')
+      var nextTextTag = document.createElement('div')
+      currentTag.id = 'currentTag'
+      prevTextTag.id = 'prevTextTag'
+      nextTextTag.id = 'nextTextTag'
+
+      currentTag.style.fontSize = '20px'
+      prevTextTag.style.fontSize = '15px'
+      nextTextTag.style.fontSize = '15px'
+
+      prevTextTag.style.color = 'grey'
+      nextTextTag.style.color = 'grey'
+      subtitleBoxTagSelector.prepend(currentTag)
+      subtitleBoxTagSelector.prepend(prevTextTag)
+      subtitleBoxTagSelector.prepend(nextTextTag)
 
       // observer.observe(target, config)
       testObserver.observe(target, config)
