@@ -26,5 +26,6 @@
 }
 
 body {
-  min-width: 20rem;
+  min-width: 10rem;
+  background-color: white;
 }

@@ -1,11 +1,19 @@
 let subtitle = ''
 // 이전,현재,다음시간을 불러오기 위한 배열 생성
 let timeArray = []
+let textSize = 20
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.message == 'start') {
     chrome.runtime.sendMessage(window.location.href)
     openScript()
+    return
+  }
+
+  if (message.message == 'textSize') {
+    console.log(message.data)
+    textSize = message.data
+    currentTag.style.fontSize = String(`${textSize}px`)
     return
   }
   // 감정분석 전 후로 subtitle 변경
@@ -60,18 +68,18 @@ const main = () => {
     // 감성수치에 따른 스타일 변경
     const handleEmotionalStyleChange = (value) => {
       if (value > 70) {
-        currentTag.style.fontSize = '20px'
+        currentTag.style.fontSize = String(`${textSize}px`)
         currentTag.style.color = 'black'
         console.log('긍정', value)
         currentTag.style.color = 'blue'
       } else if (value < 30) {
-        currentTag.style.fontSize = '20px'
+        currentTag.style.fontSize = String(`${textSize}px`)
         currentTag.style.color = 'black'
         console.log('부정', value)
         currentTag.style.color = 'red'
       } else {
         console.log('중립', value)
-        currentTag.style.fontSize = '20px'
+        currentTag.style.fontSize = String(`${textSize}px`)
         currentTag.style.color = 'black'
       }
     }
@@ -172,4 +180,4 @@ const openScript = async () => {
 }
 
 export default main
-printLine("Using the 'printLine' function from the Print Module")
+// printLine("Using the 'printLine' function from the Print Module")
