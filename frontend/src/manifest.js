@@ -22,7 +22,7 @@ export default defineManifest({
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*'],
+      matches: ['https://youtube.com/*'],
       js: ['src/content/index.js'],
     },
   ],
