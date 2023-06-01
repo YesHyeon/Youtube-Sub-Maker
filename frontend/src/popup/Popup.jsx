@@ -1,11 +1,13 @@
 import React, { useCallback, useState } from 'react'
 import { ChromePicker } from 'react-color'
 // import './Popup.css'
-import ColorButton from './ColorButton'
+import BackgroundColorButton from './BackgroundColorButton'
+import TextColorButton from './TextColorButton'
 import styled from 'styled-components'
 
 function App() {
-  const [colorClick, setColorClick] = useState(false)
+  const [backgroundColor, setBackgroundColorClick] = useState(false)
+  const [textColor, setTextColorClick] = useState(false)
   const [textClick, setTextClick] = useState(false)
 
   const [textSize, setTextSIze] = useState(20)
@@ -61,27 +63,39 @@ function App() {
         <SettingList>
           <SettingWrapper>
             <SettingText>배경색상</SettingText>
-            <ArrowButton>v</ArrowButton>
-          </SettingWrapper>
-        </SettingList>
-        <SettingList>
-          <SettingWrapper>
-            <SettingText>자막색성</SettingText>
             <ArrowButton
               onClick={() => {
-                setColorClick((prev) => !prev)
+                setBackgroundColorClick((prev) => !prev)
               }}
             >
               v
             </ArrowButton>
           </SettingWrapper>
         </SettingList>
+        {backgroundColor ? (
+          <ColorWrapper>
+            <BackgroundColorButton />
+          </ColorWrapper>
+        ) : null}
+        <SettingList>
+          <SettingWrapper>
+            <SettingText>자막색상</SettingText>
+            <ArrowButton
+              onClick={() => {
+                setTextColorClick((prev) => !prev)
+              }}
+            >
+              v
+            </ArrowButton>
+          </SettingWrapper>
+        </SettingList>
+        {textColor ? (
+          <ColorWrapper>
+            <TextColorButton />
+          </ColorWrapper>
+        ) : null}
       </SettingWrap>
-      {colorClick ? (
-        <ColorWrapper>
-          <ColorButton />
-        </ColorWrapper>
-      ) : null}
+
       <Button onClick={handleStartButtonClick}>자막생성</Button>
     </Wrap>
   )
@@ -156,11 +170,11 @@ const TextSettingText = styled.div`
 `
 
 const ColorWrapper = styled.div`
-  position: relative;
   top: 100px;
   width: 300px;
   height: 20px;
   background-color: white;
+  z-index: 100;
 `
 
 export default App

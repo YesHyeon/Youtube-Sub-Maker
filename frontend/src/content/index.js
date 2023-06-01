@@ -16,6 +16,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     currentTag.style.fontSize = String(`${textSize}px`)
     return
   }
+
+  if (message.message == 'backgroundColor') {
+    console.log(message.data.hex)
+    const backgroundColor = message.data
+    subtitleBoxTag.style.backgroundColor = message.data.hex
+    return
+  }
+
+  if (message.message == 'textColor') {
+    console.log(message.data.hex)
+    const backgroundColor = message.data
+    currentTag.style.color = message.data.hex
+    return
+  }
+
   // 감정분석 전 후로 subtitle 변경
   subtitle = message.data.textObj
   if (message.message == 'gotSubtitle') {
@@ -42,11 +57,11 @@ const main = () => {
       subtitleBoxTag.style.minHeight = '50px'
       subtitleBoxTag.style.border = '1px solid blue'
       subtitleBoxTag.style.fontSize = '20px'
-      subtitleBoxTag.id = 'subtitleBox'
+      subtitleBoxTag.id = 'subtitleBoxTag'
       belowId.prepend(subtitleBoxTag)
 
       // 자막박스에 텍스트 추가
-      let subtitleBoxTagSelector = belowId.querySelector('button')
+      var subtitleBoxTagSelector = belowId.querySelector('button')
       var currentTag = document.createElement('div')
       var prevTextTag = document.createElement('div')
       var nextTextTag = document.createElement('div')
@@ -60,6 +75,7 @@ const main = () => {
 
       prevTextTag.style.color = 'grey'
       nextTextTag.style.color = 'grey'
+
       subtitleBoxTagSelector.prepend(nextTextTag)
       subtitleBoxTagSelector.prepend(currentTag)
       subtitleBoxTagSelector.prepend(prevTextTag)
