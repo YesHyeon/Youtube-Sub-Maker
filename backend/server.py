@@ -86,9 +86,9 @@ def get_youtube_subtitle():
             초 = int(start) % 60;
             start = str(int(분)) + ':' + str(초).zfill(2);
             if ''.join(mecabKo[-1]).find('EF') or ''.join(mecabKo[-1]).find('+EC') > 0 :
-                textObj[start] = textItem + '.';
+                textObj[start] = [textItem + '.'];
             else :
-                textObj[start] = textItem + ',';
+                textObj[start] = [textItem + ','];
             textArray.append([textItem, start]);
             textItem = i['text']; # 텍스트 초기화
             start = i['start']; # 시작시간 초기화
@@ -105,7 +105,7 @@ def get_youtube_subtitle():
     초 = int(start) % 60;
     start = str(int(분)) + ':' + str(초).zfill(2);
     
-    textObj[start] = textItem ;
+    textObj[start] = [textItem] ;
     
     print(textObj)
     
@@ -151,7 +151,7 @@ def get_youtube_subtitle_emotional():
         초 = int(start) % 60;
         start = str(int(분)) + ':' + str(초).zfill(2);
         
-        textObj[start] = textItem ;
+        textObj[start] = [textItem] ;
     
         # 감성분석 모델적용
         textEmotionalArray = [];
