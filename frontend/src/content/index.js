@@ -56,7 +56,7 @@ const main = () => {
     }
 
     // 감성수치에 따른 스타일 변경
-    const changeEmotionalStyle = (value) => {
+    const handleEmotionalStyleChange = (value) => {
       if (value > 70) {
         currentTag.style.fontSize = '20px'
         currentTag.style.color = 'black'
@@ -103,7 +103,7 @@ const main = () => {
 
         if (subtitle[currentTime][1] !== undefined) {
           const emotionValue = subtitle[currentTime][1]
-          changeEmotionalStyle(emotionValue)
+          handleEmotionalStyleChange(emotionValue)
         }
       } else {
         let prevTime
@@ -114,7 +114,7 @@ const main = () => {
           if (subitlteTime > videoTime) {
             currentTag.innerText = subtitle[prevTime][0]
             const emotionValue = subtitle[prevTime][1]
-            changeEmotionalStyle(emotionValue)
+            handleEmotionalStyleChange(emotionValue)
           } else {
             prevTime = key
           }
@@ -150,7 +150,6 @@ const main = () => {
 
   // 3초 간격으로 감지시작, 감지가 시작되면 요청 중지
   const startMutation = setInterval(() => {
-    console.log('start')
     mutation()
   }, 3000)
 }
@@ -169,11 +168,6 @@ const openScript = async () => {
 
   main()
 }
-
-// setTimeout(() => {
-//   console.log('test')
-//   openScript()
-// }, 5000)
 
 export default main
 printLine("Using the 'printLine' function from the Print Module")
