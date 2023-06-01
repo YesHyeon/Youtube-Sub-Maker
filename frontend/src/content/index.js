@@ -1,14 +1,16 @@
-chrome.runtime.sendMessage(window.location.href)
-
 let subtitle = ''
 // 이전,현재,다음시간을 불러오기 위한 배열 생성
 let timeArray = []
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.message == 'start') {
+    chrome.runtime.sendMessage(window.location.href)
+    openScript()
+    return
+  }
   // 감정분석 전 후로 subtitle 변경
   subtitle = message.data.textObj
   if (message.message == 'gotSubtitle') {
-    openScript()
     for (const i in subtitle) {
       timeArray.push(i)
     }
