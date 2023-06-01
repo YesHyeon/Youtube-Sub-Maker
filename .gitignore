@@ -6,6 +6,10 @@
 env/
 venv/
 .venv/
+myproject/
+.myproject/
+my_models/
+.my_models/
 env*
 dist/
 build/

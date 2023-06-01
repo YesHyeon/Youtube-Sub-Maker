@@ -188,7 +188,7 @@ def get_youtube_subtitle_emotional():
 
                 #학습한 모델 불러오기
                 model = keras.models.load_model('model/my_models/') #TODO 데이터 경로 설정
-                model.load_weights('model/DATA_OUT/cnn_classifier_kr\weights.h5') #TODO 데이터 경로 설정
+                model.load_weights('model/DATA_OUT/cnn_classifier_kr_weights.h5') #TODO 데이터 경로 설정
                 predictions = model.predict(pad_new)
                 if(len(predictions) < 2):
                     textObj[i] = [textObj[i][0], 0];
