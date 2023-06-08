@@ -1,4 +1,4 @@
-# 👀 CCC - 보기쉬운 유튜브 자동자막 제공 서비스 
+# CCC - 보기쉬운 유튜브 자동자막 제공 서비스 
 
 <img width="172" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/7f3cd3da-afcd-4de0-afaa-b4bab379c720">
 
