@@ -74,7 +74,6 @@
 <img width="814" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/15489270-0d11-4a19-a759-d4add05af908">
 
 ***
- 현재는 자막의 음성의 주파수를 분석하여 인터랙티브한 자막 제공기능을 개발하고 있습니다.
- 
+
  
 
