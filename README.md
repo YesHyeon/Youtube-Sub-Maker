@@ -74,6 +74,7 @@
 <img width="814" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/15489270-0d11-4a19-a759-d4add05af908">
 
 ***
+ - 사용자 맞춤 스타일 변경 기능을 제공하여 사용자의 자막 사용경험을 더욱 높임
 
  
 
