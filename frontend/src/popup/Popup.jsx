@@ -5,6 +5,8 @@ import BackgroundColorButton from './BackgroundColorButton'
 import TextColorButton from './TextColorButton'
 import styled from 'styled-components'
 
+import logo from '../../src/assets/logo.png'
+
 function App() {
   const [backgroundColor, setBackgroundColorClick] = useState(false)
   const [textColor, setTextColorClick] = useState(false)
@@ -34,12 +36,13 @@ function App() {
 
   return (
     <Wrap>
-      <Header>자동자막 메이커</Header>
+      <Header>
+        <HeaderLogo />
+      </Header>
       <SettingWrap>
         <SettingList>
           <SettingWrapper>
             <SettingText>글자크기</SettingText>
-
             <ArrowButton
               onClick={() => {
                 setTextClick((prev) => !prev)
@@ -113,7 +116,18 @@ const Wrap = styled.div`
 
 const Header = styled.div`
   font-size: 15px;
-  margin-bottom: 20px;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const HeaderLogo = styled.div`
+  width: 100px;
+  height: 70px;
+  background-image: url(${logo});
+  background-size: cover;
 `
 
 const SettingWrap = styled.div`
@@ -142,7 +156,12 @@ const SettingWrapper = styled.div`
   margin-right: 10px;
 `
 
-const Button = styled.button``
+const Button = styled.button`
+  background-color: #dd2c28;
+  border: none;
+  margin: 10px;
+  padding-block: 5px;
+`
 
 const ButtonWrapper = styled.button`
   display: flex;

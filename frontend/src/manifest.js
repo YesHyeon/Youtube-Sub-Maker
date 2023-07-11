@@ -1,7 +1,7 @@
 import { defineManifest } from '@crxjs/vite-plugin'
 
 export default defineManifest({
-  name: 'youtube-sub-maker-js',
+  name: 'CCC - 유튜브 자동자막 생성기',
   description: '',
   version: '0.0.0',
   manifest_version: 3,
