@@ -4,7 +4,13 @@ let timeArray = []
 let textSize = 20
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.message === 'urlChange') {
+    chrome.runtime.sendMessage('URL')
+    return
+  }
+
   if (message.message == 'start') {
+    // 시작하기 버튼이 인식되면 현재 링크를 백엔드 서버로 전달
     chrome.runtime.sendMessage(window.location.href)
     openScript()
     return
@@ -46,7 +52,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 const main = () => {
   const mutation = async () => {
     const target = document.querySelector('#body.ytd-transcript-search-panel-renderer')
-    const testTarget = document.getElementsByClassName('ytp-time-display notranslate')[0]
+
+    const testTarget = 'ytp-time-display notranslate'[0]
 
     // 자막박스 추가
     const handleSubtitleBoxMake = () => {
@@ -57,6 +64,8 @@ const main = () => {
       subtitleBoxTag.style.minHeight = '50px'
       subtitleBoxTag.style.border = '1px solid blue'
       subtitleBoxTag.style.fontSize = '20px'
+      subtitleBoxTag.style.paddingTop = '3px'
+      subtitleBoxTag.style.paddingBottom = '3px'
       subtitleBoxTag.id = 'subtitleBoxTag'
       belowId.prepend(subtitleBoxTag)
 
@@ -83,12 +92,12 @@ const main = () => {
 
     // 감성수치에 따른 스타일 변경
     const handleEmotionalStyleChange = (value) => {
-      if (value > 70) {
+      if (value > 80) {
         currentTag.style.fontSize = String(`${textSize}px`)
         currentTag.style.color = 'black'
         console.log('긍정', value)
         currentTag.style.color = 'blue'
-      } else if (value < 30) {
+      } else if (value < 10) {
         currentTag.style.fontSize = String(`${textSize}px`)
         currentTag.style.color = 'black'
         console.log('부정', value)
@@ -191,6 +200,12 @@ const openScript = async () => {
   await scriptDOM[scriptDOM.length - 1].click()
 
   await scriptPrviousDOM[scriptPrviousDOM.length - 1].click()
+
+  const scriptPanel = document.querySelector('#panels.ytd-watch-flexy')
+  // scriptPanel.style.position = 'absolute'
+  // scriptPanel.style.width = '0px'
+
+  // 자막판넬 숨기기
 
   main()
 }
