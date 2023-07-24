@@ -161,6 +161,12 @@ const Button = styled.button`
   border: none;
   margin: 10px;
   padding-block: 5px;
+  color: white;
+  cursor: pointer;
+  :hover {
+    background-color: #ff4d4d;
+  }
+  border-radius: 5px;
 `
 
 const ButtonWrapper = styled.button`
