@@ -17,21 +17,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.message == 'textSize') {
-    console.log(message.data)
     textSize = message.data
     currentTag.style.fontSize = String(`${textSize}px`)
     return
   }
 
   if (message.message == 'backgroundColor') {
-    console.log(message.data.hex)
     const backgroundColor = message.data
     subtitleBoxTag.style.backgroundColor = message.data.hex
     return
   }
 
   if (message.message == 'textColor') {
-    console.log(message.data.hex)
     const backgroundColor = message.data
     currentTag.style.color = message.data.hex
     return
@@ -43,9 +40,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     for (const i in subtitle) {
       timeArray.push(i)
     }
-    chrome.runtime.sendMessage(`${window.location.href} getEmotionValue`)
-  } else if (message.message == 'gotEmotionValue') {
-    alert('자막의 감성분석이 완료되어 인터랙티브한 자막이 제공됩니다.')
   }
 })
 
@@ -90,25 +84,6 @@ const main = () => {
       subtitleBoxTagSelector.prepend(prevTextTag)
     }
 
-    // 감성수치에 따른 스타일 변경
-    const handleEmotionalStyleChange = (value) => {
-      if (value > 80) {
-        currentTag.style.fontSize = String(`${textSize}px`)
-        currentTag.style.color = 'black'
-        console.log('긍정', value)
-        currentTag.style.color = 'blue'
-      } else if (value < 10) {
-        currentTag.style.fontSize = String(`${textSize}px`)
-        currentTag.style.color = 'black'
-        console.log('부정', value)
-        currentTag.style.color = 'red'
-      } else {
-        console.log('중립', value)
-        currentTag.style.fontSize = String(`${textSize}px`)
-        currentTag.style.color = 'black'
-      }
-    }
-
     const callback = () => {
       const target = document.querySelector('#body.ytd-transcript-search-panel-renderer')
       const textClass = target.getElementsByClassName(
@@ -120,6 +95,7 @@ const main = () => {
       }
       const currentTime = textClass[0].innerText.split('\n')[0]
 
+      // 자막시간이, 자막배열에 있을 때
       if (subtitle[currentTime] !== undefined) {
         currentTag.innerText = subtitle[currentTime][0]
         const prevTimeIndex = timeArray.indexOf(currentTime) - 1
@@ -136,20 +112,25 @@ const main = () => {
           nextTextTag.innerText = subtitle[timeArray[nextTimeIndex]][0]
         }
 
-        if (subtitle[currentTime][1] !== undefined) {
-          const emotionValue = subtitle[currentTime][1]
-          handleEmotionalStyleChange(emotionValue)
-        }
+        console.log('currentTime', currentTime)
+        console.log('subtitle', subtitle)
+        console.log('prevTimeIndex', prevTimeIndex)
+        console.log('nextTimeIndex', nextTimeIndex)
+        console.log('timeArray', timeArray)
+        console.log('timeArray[62]', timeArray[62])
       } else {
+        // 만약 유튜브 영상클릭햇을때 시간이 현재 currenttag에 있는 시간보다 크면은.. 그 이전 값을 넣음
         let prevTime
         for (const key in subtitle) {
+          // console.log('subtitle', subtitle)
+          // console.log('key', key)
           // 비디오 시간과 자막시간을 비교하기 위함
           let subitlteTime = Number(key.split(':').join(''))
           let videoTime = Number(currentTime.split(':').join(''))
           if (subitlteTime > videoTime) {
             currentTag.innerText = subtitle[prevTime][0]
-            const emotionValue = subtitle[prevTime][1]
-            handleEmotionalStyleChange(emotionValue)
+            console.log(subitlteTime)
+            break
           } else {
             prevTime = key
           }
