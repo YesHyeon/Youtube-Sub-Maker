@@ -40,6 +40,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     for (const i in subtitle) {
       timeArray.push(i)
     }
+    timeArray.sort((a, b) => a.split(':').join('') - b.split(':').join(''))
   }
 })
 
