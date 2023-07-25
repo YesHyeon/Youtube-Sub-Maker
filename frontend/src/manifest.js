@@ -3,7 +3,7 @@ import { defineManifest } from '@crxjs/vite-plugin'
 export default defineManifest({
   name: 'CCC - 유튜브 자동자막 생성기',
   description: '',
-  version: '0.0.0',
+  version: '1.0.0',
   manifest_version: 3,
   icons: {
     16: 'img/logo-16.png',
@@ -26,11 +26,12 @@ export default defineManifest({
       js: ['src/content/index.js'],
     },
   ],
+  host_permissions: ['https://www.youtube.com/*'],
   web_accessible_resources: [
     {
       resources: ['img/logo-16.png', 'img/logo-34.png', 'img/logo-48.png', 'img/logo-128.png'],
       matches: [],
     },
   ],
-  permissions: ['tabs'],
+  permissions: ['tabs', 'activeTab', 'https://www.youtube.com/*'],
 })
