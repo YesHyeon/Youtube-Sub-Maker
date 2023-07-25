@@ -38,26 +38,9 @@ chrome.runtime.onMessage.addListener(async (args) => {
           console.log('1 pages', pages)
           console.log('1 pages[0]', pages[0])
           console.log('1 pages[0]-id', pages[0].id)
-          chrome.tabs.sendMessage(pages[0].id, { data: data, message: 'gotSubtitle' })
-        })
-      })
-      .catch((error) => console.log(error))
-  } else {
-    // 자막불러 온 후 감정분석 진행
-    await fetch('http://127.0.0.1:5002/emotional', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({ url: youtube_url }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        chrome.tabs.query({ active: true, currentWindow: true }, (pages) => {
-          console.log('3 pages', pages)
-          console.log('3 pages[0]', pages[0])
-          console.log('3 pages[0]-id', pages[0].id)
-          chrome.tabs.sendMessage(pages[0].id, { data: data, message: 'gotEmotionValue' })
+          if (pages[0].url.match('https://.*.youtube.com/.*')) {
+            chrome.tabs.sendMessage(pages[0].id, { data: data, message: 'gotSubtitle' })
+          }
         })
       })
       .catch((error) => console.log(error))
