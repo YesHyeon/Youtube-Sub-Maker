@@ -190,22 +190,20 @@ const main = () => {
 }
 
 const openScript = async () => {
-  const scriptPrviousDOM = document
-    .querySelector('#menu.ytd-watch-metadata')
-    .querySelectorAll('.yt-spec-touch-feedback-shape--touch-response')
+  // 더보기 클릭
+  const expandDOM = document.querySelector('#expand.ytd-text-inline-expander')
+  await expandDOM.click()
 
-  await scriptPrviousDOM[scriptPrviousDOM.length - 1].click()
-
-  const scriptDOM = document.querySelectorAll('yt-formatted-string.ytd-menu-service-item-renderer')
-  await scriptDOM[scriptDOM.length - 1].click()
-
-  await scriptPrviousDOM[scriptPrviousDOM.length - 1].click()
-
-  const scriptPanel = document.querySelector('#panels.ytd-watch-flexy')
-  // scriptPanel.style.position = 'absolute'
-  // scriptPanel.style.width = '0px'
+  // 스크립트 보기 클릭
+  const scriptDOM = document.querySelector(
+    '.yt-spec-button-shape-next.yt-spec-button-shape-next--outline.yt-spec-button-shape-next--call-to-action.yt-spec-button-shape-next--size-m',
+  )
+  await scriptDOM.click()
 
   // 자막판넬 숨기기
+  const scriptPanel = document.querySelector('#panels.ytd-watch-flexy')
+  scriptPanel.style.position = 'absolute'
+  scriptPanel.style.width = '0px'
 
   main()
 }

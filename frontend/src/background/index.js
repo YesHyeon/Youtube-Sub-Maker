@@ -24,7 +24,7 @@ chrome.runtime.onMessage.addListener(async (args) => {
 
   // 감성분석 진행 전 자막불러오기
   if (args.indexOf('getEmotionValue') == -1) {
-    await fetch('http://127.0.0.1:5002/subtitle', {
+    await fetch('http://youtubesubmaker.pythonanywhere.com/subtitle', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -44,7 +44,7 @@ chrome.runtime.onMessage.addListener(async (args) => {
       .catch((error) => console.log(error))
   } else {
     // 자막불러 온 후 감정분석 진행
-    await fetch('http://127.0.0.1:5002/emotional', {
+    await fetch('http://youtubesubmaker.pythonanywhere.com/emotional', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
