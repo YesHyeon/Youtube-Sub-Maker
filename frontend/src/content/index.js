@@ -179,6 +179,7 @@ const main = () => {
 
       observer.observe(target, config)
     } else {
+      clearInterval(startMutation)
       alert('자동자막을 제공하는 영상이 아닙니다.')
     }
   }
@@ -190,6 +191,10 @@ const main = () => {
 }
 
 const openScript = async () => {
+  if (document.getElementById('subtitleBoxTag') !== null) {
+    alert('이미 자막을 생성하였습니다.')
+    return
+  }
   // 더보기 클릭
   const expandDOM = document.querySelector('#expand.ytd-text-inline-expander')
   await expandDOM.click()
