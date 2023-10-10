@@ -6,6 +6,8 @@
 <br/>
 
 유튜브 자동자막을 재가공하여 보기쉽고 유의미한 자막을 제공하는 크롬 익스텐션 서비스 입니다.
+<br/>
+[Chrome Extension Store - 'CCC 유튜브 자동자막 생성기'](https://chrome.google.com/webstore/detail/ccc-%EC%9C%A0%ED%8A%9C%EB%B8%8C-%EC%9E%90%EB%8F%99%EC%9E%90%EB%A7%89-%EC%83%9D%EC%84%B1%EA%B8%B0/keonbpokgpalcoemgeojdelnhomdminb?utm_source=ext_app_menu)
 
 # 👨🏻‍💻 기술스택
 
@@ -32,13 +34,18 @@
 5) 재구성한 문장 감성분석 진행 (Positive, Negative)
 6) 문장구성 + 감성분석 결과를 토대로 재구성한 자막 제공
 
+# 📈 아키텍처
+
+<img width="506" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/3faaed97-77fb-4012-9aee-6d10ecb2e994">
+
+
 
 
 
 
 <br/>
 
-# ASIS
+# 이전(문제점)
 <div margin='20'>
 <img width="740" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/a3049b75-06ac-4697-884d-46c28190f01e">
 <br/>
@@ -54,11 +61,12 @@
 
 <br/>
 
-# TOBE
+# 이후
 <br/>
 
 <div margin='20'>
-<img width="748" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/98e7d85f-eae8-4e0a-8193-bb8a1859e5e1">
+<img width="748" alt="image" ![그림 3](https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/3bbe92e7-885a-4623-88a0-a222f068e1f9)
+src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/98e7d85f-eae8-4e0a-8193-bb8a1859e5e1">
 <br/>
 <img width="748" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/6ae2b7ef-e2fc-460f-bbc4-d70ce61856f2">
 </div>
@@ -68,13 +76,30 @@
  - 자동자막을 사용할 때 영상 하단에 자막을 배치하여 영상시청에 방해가 되지않도록 하였고, 한 줄로 보기쉽게 표현
  - 이전 자막과 다음 자막을 같이 표시하여, 유저의 자막 사용경험을 높임 <br/>
 
-***
 
-<img width="380" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/6240674f-186a-438d-bf58-e1fdbf306e25">
-<img width="814" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/15489270-0d11-4a19-a759-d4add05af908">
+# 🖥 비교분석
+<br/>
 
-***
- - 사용자 맞춤 스타일 변경 기능을 제공하여 사용자의 자막 사용경험을 더욱 높임
+<img width="800" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/fc0460e4-5a34-4d89-b491-763a1b23bf3e">
+[그림1]
+
+## 1) 자막배치 변경
+- 자막이 영상을 가리는 문제를 해결하기 위해 영상 아래로 자막을 배치했다. [그림 1]의 1번과 2번을 비교해보면 1번은 기존 유튜브에서 제공하는 자동자막 서비스이고 2번은 본 서비스에서 제공하는 자막이다. 기존 자동 자막은 배치를 수정할 수 있지만, 영상 외부로 배치할 수 없어서 영상 시청에 불편함이 있다. 또한 자막이 길어지게 되면 영상이 가려지고, 정형화 되지 않은 자막창 크기로 인해 영상 시청에 큰 불편이 있다. 그래서 DOM을 조작하여 영상 밑에 자막창을 배치하고, 영상 시청시간과 자막 리스트를 비교하여 실시간으로 자막을 보여주는 기능을 도입했다. 이로인해 사용자는 자막이 영상을 가리는 일 없이 시청할 수 있게 된다.
+
+## 2) 자막 문장화 및 이전과 다음 자막 제공
+- 자막을 문장으로 재구성하고, 이전과 다음 자막을 함께 제공하여 가독성 경험을 높였다. [그림 1]에서 1번의 자막을 보면 자막이 문장으로 제공되지 않고 무작위로 보여지는 것을 확인할 수 있다. 이는 자막을 보는 사람들로 하여금 가독성을 감소시키는 문제가 있다. 이를 해결하기 위해 Python의 mecab 라이브러리를 활용하여 [그림 1]의 2번과 같이 문장으로 재구성하였다. [그림 1]의 3번을 보면 유튜브에서 제공하는 자동자막 스크립트를 확인할 수 있는데, 이를 순서대로 탐색하며 한 글자씩 배열에 추가하고, EF(종결어미) 혹은 EC(연결어미)로 끝나는 문장이 만들어지면 자막을 제공하는 방식으로 구현했다. 최종적으로 [그림 1]의 4번과 같이 이전과 현재, 다음 자막을 구분하고 현재 영상 시청시간을 기준으로, 3문장을 함께 제공하였다. 이로 인해 사용자는 문장화 되어진 자막을 볼 수 있고, 이전과 다음 자막을 통해 자막의 문맥을 파악하는데 도움이 된다.
+
+## 3) 자막 커스터마이징 및 감정분석
+<img width="800" alt="image" src="https://github.com/YesHyeon/Youtube-Sub-Maker/assets/81014501/61e554be-f684-4ad9-bb8d-9e1fc840a8d6">
+[그림2]
+
+- 자막의 글자크기, 배경색상, 자막색상을 변경할 수 있는 기능을 제공하여 가독성을 높였고, 감정분석에 따른 스타일 변화로 동적인 자막 시청 경험을 제공했다. 그림 3에서 1번을 보면 스타일링 할 수 있는 기능들이 제공된다. 사용자는 자신만의 자막 스타일을 커스터마이징 하여서 가독성을 높일 수 있고다. 변경 내용은 실시간으로 적용이 될 수 있도록 웹의 Document 객체를 사용했고 DOM의 Style을 비동기 처리로 변경하여 자막 스타일링 기능을 구현했다. 또한 감정분석을 통해 도출된 긍정 및 부정에 따라 변경되는 자막 색상을 경험할 수 있다. 긍정이 인식되면 노란색으로 보여지고, 부정이 인식되면 파란색으로 보여진다. 또한 Konlpy를 통한 형태소 분석과 CNN Classifier 기법을 활용하여서 감정을 2가지로 분석했다. 데이터셋은 네이버 영화 리뷰데이터를 활용했다. 그림3에서 2번을 보면 자막 스타일이 노란색으로 변경된 것을 확인할 수 있는데 긍정과 부정의 감정이 각각 70% 이상 느껴지면 스타일을 변경하였다. 긍정일 때는 노란색, 부정일 때는 빨간색 스타일을 적용하여서 감정을 표현했다. 
+
+
+
+
+
+
 
  
 
